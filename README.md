@@ -1,56 +1,44 @@
 # AWS Lightsail: Manual Node.js Deployment on Ubuntu
 
-This project demonstrates a professional **IaaS (Infrastructure as a Service)** deployment. Unlike managed "Serverless" solutions, this repository documents the manual configuration of a Virtual Private Server (VPS), starting from a raw Operating System.
+This project demonstrates a manual **Infrastructure as a Service (IaaS)** deployment. While my other projects use automated "Serverless" tools, this repository proves my ability to manage the **Operating System (OS)**, security, and process persistence manually on a Linux VPS.
 
-## 🏗️ Architecture Overview
-While managed services (like App Runner) abstract away the server, this project showcases my ability to manage the **OS (Ubuntu)** directly. I am responsible for the server's security, runtime installation, and process persistence.
-
-**Live Project URL:** `http://3.108.194.63:8080`
+## 🚀 Live Deployment
+**Static IP Address:** `http://3.108.194.63:8080`
 
 ---
 
-## 🛠️ Step-by-Step Implementation
+## 🛠️ Infrastructure Implementation
 
-### 1. OS Provisioning & Networking
-* **OS:** Ubuntu 22.04 LTS (LTS ensures stability).
-* **Firewall:** Manually opened **Port 8080** via the Lightsail networking console to allow inbound TCP traffic.
-* **IP Management:** Attached a **Static IP** to ensure the application address remains permanent.
+### 1. Server & OS Management
+Launched an **Ubuntu 22.04 LTS** instance via Amazon Lightsail. Unlike managed services, I have full root access to this OS to install and configure software as needed.
+![Lightsail Instance](./images/lightsail-instance.png)
 
-### 2. Environment Configuration (Terminal)
-Accessed the instance via **SSH** to manually install the required technical stack:
-* **Node.js 18:** Installed via NodeSource repository.
-* **Git:** Installed to bridge the gap between GitHub and the Linux server.
+### 2. Manual Network Security
+Configured the **IPv4 Firewall** to allow inbound traffic on **Port 8080**. This step is required to make the Node.js application accessible to the public internet.
+![Firewall Config](./images/firewall-config.png)
 
-### 3. Application Deployment
-Instead of an automated trigger, I performed a manual "Pull" strategy:
-1. Cloned the repository directly into the Ubuntu home directory.
-2. Ran `npm install` to build dependencies within the Linux environment.
+### 3. Production Process Persistence
+Utilized **PM2** to manage the application process. This ensures the app stays "online" even if the SSH session is closed or the server reboots.
+![PM2 Status](./images/pm2-status.png)
 
-### 4. Production Process Management (PM2)
-To ensure the app survives crashes and server reboots, I implemented **PM2**:
-* Configured PM2 to monitor the `index.js` process.
-* Generated and saved a startup script to the Linux `systemd` manager.
+### 4. Site Verification
+The application is successfully served via the Static IP, proving the server and firewall are correctly configured.
+![Live Site](./images/live-site.png)
 
 ---
 
-## 📊 Deployment Evidence
+## ❓ FAQ: Understanding the Architecture
 
-### Process Monitoring (PM2)
-The screenshot below confirms that the application is running as a background process within the Ubuntu OS.
-![PM2 Status](./pm2-status.png)
+During this project, I explored the critical differences between **App Runner (Service)** and **Lightsail (Server)**. Here is the summary:
 
-### Firewall Rules
-Evidence of custom networking rules allowing traffic to bypass the Ubuntu server's security layer on port 8080.
-![Firewall Config](./firewall-config.png)
+**Q: What is the main difference between App Runner and Lightsail?**
+**A:** Think of App Runner as a **Hotel** (AWS manages everything) and Lightsail as an **Apartment** (You bring the furniture/software). In App Runner, you only handle the **Code**. In Lightsail, you handle the **OS and the Server**.
 
-### Live Instance
-The running instance details showing the Mumbai region and the assigned Static IP.
-![Lightsail Instance](./lightsail-instance.png)
+**Q: Why use GitHub if I am managing the server manually?**
+**A:** GitHub acts as the secure bridge. I push code from my local machine to GitHub, and then "pull" it into the Ubuntu OS. This ensures code integrity and provides a backup.
+
+**Q: What does "handling the OS" actually mean?**
+**A:** In App Runner, you just upload code and do nothing else. In Lightsail, you must log into the Ubuntu terminal and manually install Node.js, Git, and PM2. You are the **System Administrator**.
 
 ---
-
-## 🧠 Key Takeaways: Service vs. Server
-* **App Runner (Service):** Focused on code; AWS handles the OS.
-* **Lightsail (Server):** Focused on control; I handled the OS, security, and runtime installation.
-
-**Skills Proven:** Linux CLI, SSH, PM2, Cloud Networking, Git Version Control.
+**Architected by [HSRIPADARAO1108](https://github.com/HSRIPADARAO1108)**
